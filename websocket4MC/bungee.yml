@@ -1,0 +1,4 @@
+name: Websocket4MC
+main: org.skunion.smallru8.websocket4MC.BungeePlugin
+version: 1.0
+author: smallru8

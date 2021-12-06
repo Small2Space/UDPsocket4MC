@@ -1,4 +1,4 @@
-package org.skunion.smallru8.websocket4MC;
+package org.skunion.smallru8.UDPsocket4MC;
 
 import java.io.File;
 import java.io.IOException;

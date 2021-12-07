@@ -4,10 +4,9 @@ import java.util.ArrayList;
 
 public class DataFields {
 
-	public long sender;//sender hash
-	public ArrayList<Long> transporter = new ArrayList<Long>();
+	public String sender;//sender hash
+	public ArrayList<String> transporter = new ArrayList<String>();
 	public long timestamp;
-	public boolean cipher = false;
 	public byte type = 0x01;//data type
 	/*
 	 * 0x01 = byte[]

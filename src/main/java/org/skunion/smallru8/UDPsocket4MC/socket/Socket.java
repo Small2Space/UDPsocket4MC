@@ -12,6 +12,7 @@ import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.net.SocketAddress;
+import java.util.Random;
 
 public class Socket implements Runnable{
 
@@ -20,6 +21,7 @@ public class Socket implements Runnable{
 	private InetAddress uAddress;//unicast ip
 	private int port = 25565;
 	private int timeout = 5000;//ms
+	private long id = new Random().nextLong();
 	
 	private boolean runFlag = true;
 	
@@ -44,8 +46,10 @@ public class Socket implements Runnable{
 				e.printStackTrace();
 			}
 			
+			boolean isUnicast = false;
 			if(packet.getAddress().getHostAddress().equalsIgnoreCase(uAddress.getHostAddress())) {//recv an unicast, Decrypt
 				//TODO Decrypt
+				isUnicast = true;
 			}else if(packet.getAddress().getHostAddress().equalsIgnoreCase("225.5.6.5")) {//recv an multicast
 				
 			}else {
@@ -61,17 +65,18 @@ public class Socket implements Runnable{
 					in.close();
 				}
 				
-				if(System.currentTimeMillis()-df.timestamp>timeout) {//timeout
+				if(System.currentTimeMillis()-df.timestamp>timeout||df.sender==id||df.transporter.contains(id)) {//timeout, sent by this node, or transport by this node
 					continue;
 				}
 				
-				
+				if(isUnicast) {//multicast this packet
+					df.transporter.add(id);
+					sendData(df);
+				}
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 				continue;
 			}
-			
-			
 			
 		}
 	}
